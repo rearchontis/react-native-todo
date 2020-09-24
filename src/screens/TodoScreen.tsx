@@ -20,9 +20,9 @@ export const TodoScreen: React.FC = () => {
 
   const { title, id } = todo;
 
-  const onSaveHandler = (editedTitle: string) => {
+  const onSaveHandler = async (editedTitle: string) => {
     if (updateTodo) {
-      updateTodo(editedTitle, id);
+      await updateTodo(editedTitle, id);
     }
     setModal(false);
   };

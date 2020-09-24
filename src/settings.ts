@@ -13,3 +13,5 @@ export const REACT_THEME_COLORS = {
 };
 
 export const MAIN_SCREEN_PADDING_HORIZONTAL = 30;
+
+export const API_URL = "https://react-native-todo-application.firebaseio.com/";

@@ -25,11 +25,12 @@ export const MainLayout = () => {
 
 const styles = StyleSheet.create({
   body: {
-    // backgroundColor: "#282c34",
+    flex: 1,
   },
   container: {
     paddingHorizontal: MAIN_SCREEN_PADDING_HORIZONTAL,
     paddingVertical: 20,
+    flex: 1,
     height,
   },
 });

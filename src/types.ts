@@ -13,6 +13,8 @@ export interface Todo {
 
 export interface TodoState {
   todos: Todo[];
+  loading: boolean;
+  error: string;
 }
 
 export interface ScreenContextValues {
@@ -27,15 +29,20 @@ export interface ScreenAction {
 
 export interface TodoContextValues {
   todos: Todo[];
+  loading: boolean;
+  error: string;
   addTodo?: (title: string) => void;
   updateTodo?: (title: string, id: string) => void;
   removeTodo?: (id: string) => void;
+  fetchTodos?: () => Promise<void>;
 }
 
 export interface TodoAction {
   type: string;
   title?: string;
   id?: string;
+  error?: string;
+  todos?: Todo[];
 }
 
 export interface AddTodoProps {
@@ -47,6 +54,12 @@ export interface EditModalProps {
   visible: boolean;
   onCancel: () => void;
   onSaveHandler: (editedTitle: string) => void;
+}
+
+export interface RequestConfig {
+  method: string;
+  headers: Record<string, string>;
+  body?: string;
 }
 
 export interface NavbarProps {
