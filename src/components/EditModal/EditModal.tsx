@@ -3,13 +3,7 @@ import { View, TextInput, StyleSheet, Modal, Alert } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { REACT_THEME_COLORS } from "../../settings";
 import { AppButton } from "../UI/AppButton";
-
-interface EditModalProps {
-  value: string;
-  visible: boolean;
-  onCancel: () => void;
-  onSaveHandler: (editedTitle: string) => void;
-}
+import { EditModalProps } from "../../types";
 
 export const EditModal: React.FC<EditModalProps> = ({
   value,
@@ -31,6 +25,11 @@ export const EditModal: React.FC<EditModalProps> = ({
     }
   };
 
+  const cancelHandler = () => {
+    setTitle(value);
+    onCancel();
+  };
+
   return (
     <Modal visible={visible} animationType="slide">
       <View style={styles.wrap}>
@@ -47,7 +46,7 @@ export const EditModal: React.FC<EditModalProps> = ({
         <View style={styles.buttons}>
           <AppButton
             style={{ backgroundColor: REACT_THEME_COLORS.red }}
-            onPress={onCancel}
+            onPress={cancelHandler}
           >
             <MaterialIcons name="cancel" size={24} color="black" />
           </AppButton>
@@ -76,6 +75,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     width: "80%",
     fontSize: 16,
+    fontFamily: "cabin-sketch-regular",
     color: REACT_THEME_COLORS.white,
   },
   buttons: {

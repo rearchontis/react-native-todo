@@ -1,14 +1,8 @@
 import React, { useCallback } from "react";
 import { View, StyleSheet, TouchableOpacity } from "react-native";
-import { Todo } from "../../../App";
 import { REACT_THEME_COLORS } from "../../settings";
 import { AppText } from "../UI/AppText";
-
-interface TodoComponentProps {
-  todo: Todo;
-  onRemove: (id: string) => void;
-  onOpen: (id: string) => void;
-}
+import { TodoComponentProps } from "../../types";
 
 export const TodoComponent: React.FC<TodoComponentProps> = ({
   todo,
@@ -18,7 +12,9 @@ export const TodoComponent: React.FC<TodoComponentProps> = ({
   const { id, title } = todo;
 
   const longPressHandler = useCallback(() => {
-    onRemove(id);
+    if (onRemove) {
+      onRemove(id);
+    }
   }, [id, onRemove]);
 
   const pressHandler = useCallback(() => {
@@ -32,7 +28,7 @@ export const TodoComponent: React.FC<TodoComponentProps> = ({
       onPress={pressHandler}
     >
       <View style={styles.todo}>
-        <AppText type="regular" style={styles.title}>
+        <AppText type="cabin-sketch-regular" style={styles.title}>
           {title}
         </AppText>
       </View>
@@ -52,6 +48,5 @@ const styles = StyleSheet.create({
   title: {
     color: REACT_THEME_COLORS.darkest,
     fontSize: 18,
-    // fontFamily: "roboto-bold",
   },
 });

@@ -1,38 +1,37 @@
 import { MaterialIcons } from "@expo/vector-icons";
-import React, { useState, useCallback } from "react";
+import React, { useState, useContext } from "react";
 import { StyleSheet, View, Dimensions } from "react-native";
-import { Todo } from "../../App";
 import { EditModal } from "../components/EditModal/EditModal";
 import { AppButton } from "../components/UI/AppButton";
 import { AppCard } from "../components/UI/AppCard";
 import { AppText } from "../components/UI/AppText";
 import { REACT_THEME_COLORS } from "../settings";
+import { TodoContext } from "../context/todo/todoContext";
+import { ScreenContext } from "../context/screen/screenContext";
+import { Todo } from "../types";
 
-interface TodoScreenProps {
-  onRemove: (id: string) => void;
-  goBack: () => void;
-  todo: Todo;
-  onSave: (id: string, title: string) => void;
-}
+export const TodoScreen: React.FC = () => {
+  const { todos, updateTodo, removeTodo } = useContext(TodoContext);
+  const { todoId, changeScreen } = useContext(ScreenContext);
 
-export const TodoScreen: React.FC<TodoScreenProps> = ({
-  onRemove,
-  goBack,
-  todo,
-  onSave,
-}) => {
+  const todo = todos.find((seekTodo) => seekTodo.id === todoId) as Todo;
+
   const [modal, setModal] = useState<boolean>(false);
 
   const { title, id } = todo;
 
   const onSaveHandler = (editedTitle: string) => {
-    onSave(id, editedTitle);
+    if (updateTodo) {
+      updateTodo(editedTitle, id);
+    }
     setModal(false);
   };
 
-  const onRemoveHandler = useCallback(() => {
-    onRemove(id);
-  }, [id, onRemove]);
+  const onRemoveTodoHandler = (_id: string) => {
+    if (removeTodo) {
+      removeTodo(_id);
+    }
+  };
 
   return (
     <View>
@@ -44,7 +43,7 @@ export const TodoScreen: React.FC<TodoScreenProps> = ({
       />
 
       <AppCard style={styles.card}>
-        <AppText type="regular" style={styles.title}>
+        <AppText type="cabin-sketch-regular" style={styles.title}>
           {title}
         </AppText>
         <AppButton
@@ -58,7 +57,7 @@ export const TodoScreen: React.FC<TodoScreenProps> = ({
         <View style={styles.button}>
           <AppButton
             style={{ backgroundColor: REACT_THEME_COLORS.lightgrey }}
-            onPress={goBack}
+            onPress={() => changeScreen("")}
           >
             <MaterialIcons name="keyboard-backspace" size={24} color="black" />
           </AppButton>
@@ -66,7 +65,7 @@ export const TodoScreen: React.FC<TodoScreenProps> = ({
         <View style={styles.button}>
           <AppButton
             style={{ backgroundColor: REACT_THEME_COLORS.red }}
-            onPress={onRemoveHandler}
+            onPress={() => onRemoveTodoHandler(todo.id)}
           >
             <MaterialIcons name="delete" size={24} color="black" />
           </AppButton>

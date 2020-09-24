@@ -8,11 +8,7 @@ import {
 } from "react-native";
 import { REACT_THEME_COLORS } from "../../settings";
 import { AppText } from "./AppText";
-
-interface AppButtonProps {
-  style?: Record<string, string | number>;
-  onPress: (...args: any[]) => any;
-}
+import { AppButtonProps } from "../../types";
 
 export const AppButton: React.FC<AppButtonProps> = ({
   style,

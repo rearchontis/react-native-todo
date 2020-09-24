@@ -1,23 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { StyleSheet, View, FlatList, Image, Dimensions } from "react-native";
-import { Todo } from "../../App";
 import { AddTodo } from "../components/AddTodo/AddTodo";
 import { TodoComponent } from "../components/TodoComponent/TodoComponent";
 import { MAIN_SCREEN_PADDING_HORIZONTAL } from "../settings";
+import { TodoContext } from "../context/todo/todoContext";
+import { ScreenContext } from "../context/screen/screenContext";
 
-interface MainScreenProps {
-  addTodo: (title: string) => void;
-  todos: Todo[];
-  removeTodo: (id: string) => void;
-  openTodo: (id: string) => void;
-}
+export const MainScreen: React.FC = () => {
+  const { addTodo, todos, removeTodo } = useContext(TodoContext);
+  const { changeScreen } = useContext(ScreenContext);
 
-export const MainScreen: React.FC<MainScreenProps> = ({
-  addTodo,
-  todos,
-  removeTodo,
-  openTodo,
-}) => {
   const width = () => {
     return Dimensions.get("window").width - MAIN_SCREEN_PADDING_HORIZONTAL * 2;
   };
@@ -39,7 +31,11 @@ export const MainScreen: React.FC<MainScreenProps> = ({
         data={todos}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <TodoComponent todo={item} onRemove={removeTodo} onOpen={openTodo} />
+          <TodoComponent
+            todo={item}
+            onRemove={removeTodo}
+            onOpen={changeScreen}
+          />
         )}
       />
     </View>

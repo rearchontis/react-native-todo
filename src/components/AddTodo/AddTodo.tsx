@@ -3,17 +3,16 @@ import { View, StyleSheet, TextInput, Alert, Keyboard } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { REACT_THEME_COLORS } from "../../settings";
 import { AppButton } from "../UI/AppButton";
-
-interface AddTodoProps {
-  onSubmit: (title: string) => void;
-}
+import { AddTodoProps } from "../../types";
 
 export const AddTodo: React.FC<AddTodoProps> = ({ onSubmit }) => {
-  const [value, setValue] = useState<string>("");
+  const [value, setValue] = useState("");
 
   const pressHandler = () => {
     if (value.trim()) {
-      onSubmit(value);
+      if (onSubmit) {
+        onSubmit(value);
+      }
       setValue("");
       Keyboard.dismiss();
     } else {
@@ -39,9 +38,6 @@ export const AddTodo: React.FC<AddTodoProps> = ({ onSubmit }) => {
           color={REACT_THEME_COLORS.dark}
         />
       </AppButton>
-      {/* <TouchableOpacity style={styles.button} onPress={pressHandler}>
-        <Text style={styles.buttonText}>+</Text>
-      </TouchableOpacity> */}
     </View>
   );
 };
@@ -56,10 +52,11 @@ const styles = StyleSheet.create({
     width: "80%",
     padding: 10,
     fontSize: 14,
+    fontFamily: "cabin-sketch-regular",
     borderStyle: "solid",
     borderBottomWidth: 2,
     borderBottomColor: REACT_THEME_COLORS.blue,
-    color: REACT_THEME_COLORS.dark,
+    color: REACT_THEME_COLORS.darkest,
   },
   button: {
     width: 50,

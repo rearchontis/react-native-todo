@@ -2,15 +2,12 @@ import * as React from "react";
 import { View, StyleSheet, Platform } from "react-native";
 import { REACT_THEME_COLORS } from "../../settings";
 import { AppText } from "../UI/AppText";
-
-interface NavbarProps {
-  title: string;
-}
+import { NavbarProps } from "../../types";
 
 export const Navbar: React.FC<NavbarProps> = ({ title }) => {
   return (
     <View style={styles.navbar}>
-      <AppText type="boldItalic" style={styles.text}>
+      <AppText type="cabin-sketch-bold" style={styles.text}>
         {title}
       </AppText>
     </View>
@@ -40,7 +37,7 @@ const styles = StyleSheet.create({
         color: REACT_THEME_COLORS.darkest,
       },
       android: {
-        color: REACT_THEME_COLORS.lightblue,
+        color: REACT_THEME_COLORS.blue,
       },
     }),
   },

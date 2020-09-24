@@ -1,151 +1,37 @@
-import { StatusBar } from "expo-status-bar";
-import React, { useCallback, useState } from "react";
-// import * as Font from "expo-font";
+import React, { useState } from "react";
 import { AppLoading } from "expo";
-import { StyleSheet, View, Dimensions, Alert } from "react-native";
-import { Navbar } from "./src/components/Navbar/Navbar";
-import { MainScreen } from "./src/screens/MainScreen";
-import { TodoScreen } from "./src/screens/TodoScreen";
-import useFonts from "./src/hooks/useFonts";
-import { MAIN_SCREEN_PADDING_HORIZONTAL } from "./src/settings";
+import * as Font from "expo-font";
 
-// async function loadApplication() {
-//   await Font.loadAsync({
-//     "roboto-regular": require("./assets/fonts/Roboto-Regular.ttf"),
-//     "roboto-bold": require("./assets/fonts/Roboto-Bold.ttf"),
-//   });
-// }
+import { MainLayout } from "./src/MainLayout";
+import { TodoState } from "./src/context/todo/TodoState";
+import { ScreenState } from "./src/context/screen/ScreenState";
 
-export interface Todo {
-  id: string;
-  title: string;
+async function loadApplication() {
+  await Font.loadAsync({
+    "neucha-regular": require("./assets/fonts/Neucha-Regular.ttf"),
+    "cabin-sketch-regular": require("./assets/fonts/CabinSketch-Regular.ttf"),
+    "cabin-sketch-bold": require("./assets/fonts/CabinSketch-Bold.ttf"),
+  });
 }
 
-const height = Dimensions.get("window").height;
-
-const data = [
-  { id: "1", title: "Learn React Native" },
-  { id: "2", title: "Create an app" },
-  { id: "3", title: "..." },
-];
-
 export default function App() {
-  // const [isReady, setIsReady] = useState(false);
-  const [fontsLoaded] = useFonts();
+  const [isReady, setIsReady] = useState(false);
 
-  const [todoId, setTodoId] = useState("");
-  const [todos, setTodos] = useState<Todo[]>(data);
-
-  const addTodo = useCallback((title: string) => {
-    const id = Date.now().toString();
-    const newTodo = { id, title };
-
-    setTodos((prevTodos) => [...prevTodos, newTodo]);
-  }, []);
-
-  const removeTodo = useCallback(
-    (id: string) => {
-      const selectedTodo = todos.find((todo) => todo.id === id);
-
-      Alert.alert(
-        "Todo deleting",
-        `Are you sure you want to delete "${selectedTodo?.title}" Todo?`,
-        [
-          {
-            text: "Cancel",
-            style: "cancel",
-          },
-          {
-            text: "I am sure",
-            style: "destructive",
-            onPress: () => {
-              setTodoId("");
-              setTodos((prevTodos) =>
-                prevTodos.filter((todo) => todo.id !== id)
-              );
-            },
-          },
-        ],
-        { cancelable: false }
-      );
-    },
-    [todos, setTodos]
-  );
-
-  const updateTodo = useCallback((id, title) => {
-    setTodos((prevTodos) =>
-      prevTodos.map((todo) => {
-        if (todo.id === id) {
-          todo.title = title;
-        }
-        return todo;
-      })
+  if (!isReady) {
+    return (
+      <AppLoading
+        startAsync={loadApplication}
+        onError={(err) => console.log(err)}
+        onFinish={() => setIsReady(true)}
+      />
     );
-  }, []);
-
-  const openTodoHandler = useCallback(
-    (id: string) => {
-      setTodoId(id);
-    },
-    [setTodoId]
-  );
-
-  const goToMainScreenHandler = useCallback(() => setTodoId(""), []);
-
-  let content = (
-    <MainScreen
-      addTodo={addTodo}
-      todos={todos}
-      removeTodo={removeTodo}
-      openTodo={openTodoHandler}
-    />
-  );
-
-  if (todoId.trim().length > 0) {
-    const selectedTodo = todos.find((todo) => todo.id === todoId);
-
-    if (selectedTodo) {
-      content = (
-        <TodoScreen
-          onRemove={removeTodo}
-          goBack={goToMainScreenHandler}
-          todo={selectedTodo}
-          onSave={updateTodo}
-        />
-      );
-    }
-  }
-
-  // if (!isReady) {
-  //   return (
-  //     <AppLoading
-  //       startAsync={loadApplication}
-  //       onError={(error) => console.error(error)}
-  //       onFinish={() => setIsReady(true)}
-  //     />
-  //   );
-  // }
-
-  if (!fontsLoaded) {
-    return <AppLoading />;
   }
 
   return (
-    <View style={styles.body}>
-      <StatusBar style="light" />
-      <Navbar title={"Simple ToDo Application"} />
-      <View style={styles.container}>{content}</View>
-    </View>
+    <ScreenState>
+      <TodoState>
+        <MainLayout />
+      </TodoState>
+    </ScreenState>
   );
 }
-
-const styles = StyleSheet.create({
-  body: {
-    backgroundColor: "#282c34",
-  },
-  container: {
-    paddingHorizontal: MAIN_SCREEN_PADDING_HORIZONTAL,
-    paddingVertical: 20,
-    height,
-  },
-});
