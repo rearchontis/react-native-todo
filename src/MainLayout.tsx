@@ -5,7 +5,7 @@ import { Navbar } from "./components/Navbar/Navbar";
 import { TodoScreen } from "./screens/TodoScreen";
 import { MainScreen } from "./screens/MainScreen";
 import { MAIN_SCREEN_PADDING_HORIZONTAL } from "./settings";
-import { ScreenContext } from "./context/screen/screenContext";
+import { ScreenContext } from "./context/screen/ScreenState";
 
 const height = Dimensions.get("window").height;
 

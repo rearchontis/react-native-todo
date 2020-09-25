@@ -6,8 +6,8 @@ import {
   MAIN_SCREEN_PADDING_HORIZONTAL,
   REACT_THEME_COLORS,
 } from "../settings";
-import { TodoContext } from "../context/todo/todoContext";
-import { ScreenContext } from "../context/screen/screenContext";
+import { TodoContext } from "../context/todo/TodoState";
+import { ScreenContext } from "../context/screen/ScreenState";
 import { AppLoader } from "../components/UI/AppLoader";
 import { AppText } from "../components/UI/AppText";
 import { AppButton } from "../components/UI/AppButton";

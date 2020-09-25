@@ -1,7 +1,11 @@
 import React, { useReducer } from "react";
 import { CHANGE_SCREEN } from "../actionTypes";
-import { ScreenContext } from "./screenContext";
+// import { ScreenContext } from "./screenContext";
 import { screenReducer } from "./screenReducer";
+import { createContext } from "react";
+import { ScreenContextValues } from "../../types";
+
+export const ScreenContext = createContext({} as ScreenContextValues);
 
 export const ScreenState: React.FC = ({ children }) => {
   const [state, dispatch] = useReducer(screenReducer, "");

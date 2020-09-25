@@ -1,4 +1,9 @@
-import React, { useReducer, useContext, useCallback } from "react";
+import React, {
+  createContext,
+  useReducer,
+  useContext,
+  useCallback,
+} from "react";
 import { Alert } from "react-native";
 import { API_URL } from "../../settings";
 import {
@@ -11,8 +16,8 @@ import {
   SHOW_LOADER,
   UPDATE_TODO,
 } from "../actionTypes";
-import { ScreenContext } from "../screen/screenContext";
-import { TodoContext } from "./todoContext";
+import { TodoContextValues } from "../../types";
+import { ScreenContext } from "../screen/ScreenState";
 import { todoReducer } from "./todoReducer";
 import { HTTP } from "../../http";
 
@@ -21,6 +26,8 @@ export const initialState = {
   loading: false,
   error: "",
 };
+
+export const TodoContext = createContext(initialState as TodoContextValues);
 
 export const TodoState: React.FC = ({ children }) => {
   const [state, dispatch] = useReducer(todoReducer, initialState);

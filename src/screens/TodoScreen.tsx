@@ -6,8 +6,8 @@ import { AppButton } from "../components/UI/AppButton";
 import { AppCard } from "../components/UI/AppCard";
 import { AppText } from "../components/UI/AppText";
 import { REACT_THEME_COLORS } from "../settings";
-import { TodoContext } from "../context/todo/todoContext";
-import { ScreenContext } from "../context/screen/screenContext";
+import { TodoContext } from "../context/todo/TodoState";
+import { ScreenContext } from "../context/screen/ScreenState";
 import { Todo } from "../types";
 
 export const TodoScreen: React.FC = () => {
