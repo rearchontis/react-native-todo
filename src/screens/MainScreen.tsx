@@ -78,13 +78,10 @@ export const MainScreen: React.FC = () => {
   if (error) {
     return (
       <View style={styles.center}>
-        <AppText
-          type="cabin-sketch-regular"
-          style={{ color: REACT_THEME_COLORS.red, textAlign: "center" }}
-        >
+        <AppText type="cabin-sketch-regular" style={styles.errorText}>
           {error}
         </AppText>
-        <AppButton onPress={loadTodos} style={{ marginVertical: 20 }}>
+        <AppButton onPress={loadTodos} style={styles.tryAgain}>
           Try again
         </AppButton>
       </View>
@@ -115,5 +112,12 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+  },
+  errorText: {
+    color: REACT_THEME_COLORS.red,
+    textAlign: "center",
+  },
+  tryAgain: {
+    marginVertical: 20,
   },
 });

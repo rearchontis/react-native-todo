@@ -30,10 +30,7 @@ export const TodoState: React.FC = ({ children }) => {
     clearError();
 
     try {
-      const data = await HTTP.post(
-        "https://react-native-todo-application.firebaseio.com/todos.json",
-        { title }
-      );
+      const data = await HTTP.post(API_URL + ".json", { title });
       dispatch({ type: ADD_TODO, title, id: data.name });
     } catch (error) {
       showError("Something went wrong");
@@ -55,9 +52,7 @@ export const TodoState: React.FC = ({ children }) => {
           style: "destructive",
           onPress: async () => {
             changeScreen("");
-            await HTTP.delete(
-              `https://react-native-todo-application.firebaseio.com/todos/${id}.json`
-            );
+            await HTTP.delete(API_URL + ".json");
             dispatch({ type: REMOVE_TODO, id });
           },
         },
@@ -68,10 +63,7 @@ export const TodoState: React.FC = ({ children }) => {
 
   const updateTodo = useCallback(async (title: string, id: string) => {
     try {
-      await HTTP.patch(
-        `https://react-native-todo-application.firebaseio.com/todos/${id}.json`,
-        { title }
-      );
+      await HTTP.patch(API_URL + `${id}.json`, { title });
       dispatch({ type: UPDATE_TODO, title, id });
     } catch (error) {
       showError("Something went wrong: " + error);
@@ -82,9 +74,7 @@ export const TodoState: React.FC = ({ children }) => {
     showLoader();
     clearError();
     try {
-      const data = await HTTP.get(
-        "https://react-native-todo-application.firebaseio.com/todos.json"
-      );
+      const data = await HTTP.get(API_URL + ".json");
       const todos = Object.keys(data).map((key) => ({ ...data[key], id: key }));
 
       dispatch({ type: FETCH_TODOS, todos });
