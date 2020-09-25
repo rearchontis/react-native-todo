@@ -4,7 +4,7 @@ import { REACT_THEME_COLORS } from "../../settings";
 import { AppText } from "../UI/AppText";
 import { NavbarProps } from "../../types";
 
-export const Navbar: React.FC<NavbarProps> = ({ title }) => {
+export const Navbar: React.FC<NavbarProps> = React.memo(({ title }) => {
   return (
     <View style={styles.navbar}>
       <AppText type="cabin-sketch-bold" style={styles.text}>
@@ -12,7 +12,7 @@ export const Navbar: React.FC<NavbarProps> = ({ title }) => {
       </AppText>
     </View>
   );
-};
+});
 
 const styles = StyleSheet.create({
   navbar: {

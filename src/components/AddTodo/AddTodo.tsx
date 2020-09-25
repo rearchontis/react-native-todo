@@ -5,7 +5,7 @@ import { REACT_THEME_COLORS } from "../../settings";
 import { AppButton } from "../UI/AppButton";
 import { AddTodoProps } from "../../types";
 
-export const AddTodo: React.FC<AddTodoProps> = ({ onSubmit }) => {
+export const AddTodo: React.FC<AddTodoProps> = React.memo(({ onSubmit }) => {
   const [value, setValue] = useState("");
 
   const pressHandler = useCallback(() => {
@@ -40,7 +40,7 @@ export const AddTodo: React.FC<AddTodoProps> = ({ onSubmit }) => {
       </AppButton>
     </View>
   );
-};
+});
 
 const styles = StyleSheet.create({
   block: {

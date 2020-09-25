@@ -6,7 +6,7 @@ import { ScreenContextValues } from "../../types";
 
 export const ScreenContext = createContext({} as ScreenContextValues);
 
-export const ScreenState: React.FC = ({ children }) => {
+export const ScreenState: React.FC = React.memo(({ children }) => {
   const [state, dispatch] = useReducer(screenReducer, "");
 
   const changeScreen = useCallback((id: string) => {
@@ -23,4 +23,4 @@ export const ScreenState: React.FC = ({ children }) => {
       {children}
     </ScreenContext.Provider>
   );
-};
+});

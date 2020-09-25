@@ -2,11 +2,11 @@ import React from "react";
 import { View, StyleSheet } from "react-native";
 import { REACT_THEME_COLORS } from "../../settings";
 
-export const AppCard = (props: any) => {
+export const AppCard = React.memo((props: any) => {
   return (
     <View style={{ ...styles.default, ...props.style }}>{props.children}</View>
   );
-};
+});
 
 const styles = StyleSheet.create({
   default: {

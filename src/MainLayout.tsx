@@ -9,7 +9,7 @@ import { ScreenContext } from "./context/screen/ScreenState";
 
 const height = Dimensions.get("window").height;
 
-export const MainLayout = () => {
+export const MainLayout = React.memo(() => {
   const { todoId } = useContext(ScreenContext);
 
   return (
@@ -21,7 +21,7 @@ export const MainLayout = () => {
       </View>
     </View>
   );
-};
+});
 
 const styles = StyleSheet.create({
   body: {

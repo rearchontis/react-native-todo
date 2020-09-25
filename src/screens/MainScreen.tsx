@@ -12,7 +12,7 @@ import { AppLoader } from "../components/UI/AppLoader";
 import { AppText } from "../components/UI/AppText";
 import { AppButton } from "../components/UI/AppButton";
 
-export const MainScreen: React.FC = () => {
+export const MainScreen: React.FC = React.memo(() => {
   const { addTodo, todos, removeTodo, loading, error, fetchTodos } = useContext(
     TodoContext
   );
@@ -101,7 +101,7 @@ export const MainScreen: React.FC = () => {
       {content}
     </View>
   );
-};
+});
 
 const styles = StyleSheet.create({
   imageWrapper: {

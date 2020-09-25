@@ -10,7 +10,7 @@ import { TodoContext } from "../context/todo/TodoState";
 import { ScreenContext } from "../context/screen/ScreenState";
 import { Todo } from "../types";
 
-export const TodoScreen: React.FC = () => {
+export const TodoScreen: React.FC = React.memo(() => {
   const { todos, updateTodo, removeTodo } = useContext(TodoContext);
   const { todoId, changeScreen } = useContext(ScreenContext);
 
@@ -79,7 +79,7 @@ export const TodoScreen: React.FC = () => {
       </View>
     </View>
   );
-};
+});
 
 const styles = StyleSheet.create({
   buttons: {

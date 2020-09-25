@@ -5,62 +5,59 @@ import { REACT_THEME_COLORS } from "../../settings";
 import { AppButton } from "../UI/AppButton";
 import { EditModalProps } from "../../types";
 
-export const EditModal: React.FC<EditModalProps> = ({
-  value,
-  visible,
-  onCancel,
-  onSaveHandler,
-}) => {
-  const [title, setTitle] = useState(value);
-  const saveHandler = useCallback(() => {
-    const symbols = title.trim().length;
+export const EditModal: React.FC<EditModalProps> = React.memo(
+  ({ value, visible, onCancel, onSaveHandler }) => {
+    const [title, setTitle] = useState(value);
+    const saveHandler = useCallback(() => {
+      const symbols = title.trim().length;
 
-    if (symbols < 3) {
-      Alert.alert(
-        "Error",
-        `Min name length contains 3 symbols, now entered ${symbols} symbols`
-      );
-    } else {
-      onSaveHandler(title);
-    }
-  }, [onSaveHandler, title]);
+      if (symbols < 3) {
+        Alert.alert(
+          "Error",
+          `Min name length contains 3 symbols, now entered ${symbols} symbols`
+        );
+      } else {
+        onSaveHandler(title);
+      }
+    }, [onSaveHandler, title]);
 
-  const cancelHandler = useCallback(() => {
-    setTitle(value);
-    onCancel();
-  }, [setTitle, onCancel, value]);
+    const cancelHandler = useCallback(() => {
+      setTitle(value);
+      onCancel();
+    }, [setTitle, onCancel, value]);
 
-  return (
-    <Modal visible={visible} animationType="slide">
-      <View style={styles.wrap}>
-        <TextInput
-          value={title}
-          style={styles.input}
-          onChangeText={setTitle}
-          placeholder={"Enter the edited todo"}
-          placeholderTextColor={REACT_THEME_COLORS.white}
-          autoCapitalize={"sentences"}
-          autoCorrect={false}
-          maxLength={64}
-        />
-        <View style={styles.buttons}>
-          <AppButton
-            style={{ backgroundColor: REACT_THEME_COLORS.red }}
-            onPress={cancelHandler}
-          >
-            <MaterialIcons name="cancel" size={24} color="black" />
-          </AppButton>
-          <AppButton
-            style={{ backgroundColor: REACT_THEME_COLORS.green }}
-            onPress={saveHandler}
-          >
-            <MaterialIcons name="save" size={24} color="black" />
-          </AppButton>
+    return (
+      <Modal visible={visible} animationType="slide">
+        <View style={styles.wrap}>
+          <TextInput
+            value={title}
+            style={styles.input}
+            onChangeText={setTitle}
+            placeholder={"Enter the edited todo"}
+            placeholderTextColor={REACT_THEME_COLORS.white}
+            autoCapitalize={"sentences"}
+            autoCorrect={false}
+            maxLength={64}
+          />
+          <View style={styles.buttons}>
+            <AppButton
+              style={{ backgroundColor: REACT_THEME_COLORS.red }}
+              onPress={cancelHandler}
+            >
+              <MaterialIcons name="cancel" size={24} color="black" />
+            </AppButton>
+            <AppButton
+              style={{ backgroundColor: REACT_THEME_COLORS.green }}
+              onPress={saveHandler}
+            >
+              <MaterialIcons name="save" size={24} color="black" />
+            </AppButton>
+          </View>
         </View>
-      </View>
-    </Modal>
-  );
-};
+      </Modal>
+    );
+  }
+);
 
 const styles = StyleSheet.create({
   wrap: {
