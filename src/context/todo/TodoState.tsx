@@ -71,10 +71,7 @@ export const TodoState: React.FC = React.memo(({ children }) => {
             style: "destructive",
             onPress: async () => {
               changeScreen("");
-              await HTTP.delete(
-                `https://react-native-todo-application.firebaseio.com/todos/${id}.json`
-              );
-              // await HTTP.delete(API_URL + `/${id}.json`);
+              await HTTP.delete(API_URL + `/${id}.json`);
               dispatch({ type: REMOVE_TODO, id });
             },
           },
@@ -101,12 +98,16 @@ export const TodoState: React.FC = React.memo(({ children }) => {
     showLoader();
     clearError();
     try {
-      const data = await HTTP.get(
-        "https://react-native-todo-application.firebaseio.com/todos.json"
-      );
-      const todos = Object.keys(data).map((key) => ({ ...data[key], id: key }));
+      const data = await HTTP.get(API_URL + ".json");
 
-      dispatch({ type: FETCH_TODOS, todos });
+      if (data) {
+        const todos = Object.keys(data).map((key) => ({
+          ...data[key],
+          id: key,
+        }));
+
+        dispatch({ type: FETCH_TODOS, todos });
+      }
     } catch (error) {
       showError("Something went wrong: " + error);
     } finally {
