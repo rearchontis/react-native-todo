@@ -33,49 +33,66 @@ export const TodoState: React.FC = ({ children }) => {
   const [state, dispatch] = useReducer(todoReducer, initialState);
   const { changeScreen } = useContext(ScreenContext);
 
-  const addTodo = async (title: string) => {
-    clearError();
+  const showLoader = useCallback(() => dispatch({ type: SHOW_LOADER }), []);
+  const hideLoader = useCallback(() => dispatch({ type: HIDE_LOADER }), []);
 
-    try {
-      const data = await HTTP.post(API_URL + ".json", { title });
-      dispatch({ type: ADD_TODO, title, id: data.name });
-    } catch (error) {
-      showError("Something went wrong");
-    }
-  };
-
-  const removeTodo = (id: string) => {
-    const selectedTodo = state.todos.find((todo) => todo.id === id);
-    Alert.alert(
-      "Todo deleting",
-      `Are you sure you want to delete "${selectedTodo?.title}" Todo?`,
-      [
-        {
-          text: "Cancel",
-          style: "cancel",
-        },
-        {
-          text: "I am sure",
-          style: "destructive",
-          onPress: async () => {
-            changeScreen("");
-            await HTTP.delete(API_URL + ".json");
-            dispatch({ type: REMOVE_TODO, id });
-          },
-        },
-      ],
-      { cancelable: false }
-    );
-  };
-
-  const updateTodo = useCallback(async (title: string, id: string) => {
-    try {
-      await HTTP.patch(API_URL + `${id}.json`, { title });
-      dispatch({ type: UPDATE_TODO, title, id });
-    } catch (error) {
-      showError("Something went wrong: " + error);
-    }
+  const showError = useCallback((error: string) => {
+    dispatch({ type: SHOW_ERROR, error });
   }, []);
+  const clearError = useCallback(() => dispatch({ type: CLEAR_ERROR }), []);
+
+  const addTodo = useCallback(
+    async (title: string) => {
+      clearError();
+
+      try {
+        const data = await HTTP.post(API_URL + ".json", { title });
+        dispatch({ type: ADD_TODO, title, id: data.name });
+      } catch (error) {
+        showError("Something went wrong");
+      }
+    },
+    [clearError, showError]
+  );
+
+  const removeTodo = useCallback(
+    (id: string) => {
+      const selectedTodo = state.todos.find((todo) => todo.id === id);
+      Alert.alert(
+        "Todo deleting",
+        `Are you sure you want to delete "${selectedTodo?.title}" Todo?`,
+        [
+          {
+            text: "Cancel",
+            style: "cancel",
+          },
+          {
+            text: "I am sure",
+            style: "destructive",
+            onPress: async () => {
+              changeScreen("");
+              await HTTP.delete(API_URL + ".json");
+              dispatch({ type: REMOVE_TODO, id });
+            },
+          },
+        ],
+        { cancelable: false }
+      );
+    },
+    [changeScreen, state.todos]
+  );
+
+  const updateTodo = useCallback(
+    async (title: string, id: string) => {
+      try {
+        await HTTP.patch(API_URL + `${id}.json`, { title });
+        dispatch({ type: UPDATE_TODO, title, id });
+      } catch (error) {
+        showError("Something went wrong: " + error);
+      }
+    },
+    [showError]
+  );
 
   const fetchTodos = useCallback(async () => {
     showLoader();
@@ -90,13 +107,7 @@ export const TodoState: React.FC = ({ children }) => {
     } finally {
       hideLoader();
     }
-  }, []);
-
-  const showLoader = () => dispatch({ type: SHOW_LOADER });
-  const hideLoader = () => dispatch({ type: HIDE_LOADER });
-
-  const showError = (error: string) => dispatch({ type: SHOW_ERROR, error });
-  const clearError = () => dispatch({ type: CLEAR_ERROR });
+  }, [showError, clearError, showLoader, hideLoader]);
 
   return (
     <TodoContext.Provider

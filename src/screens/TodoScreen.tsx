@@ -1,5 +1,5 @@
 import { MaterialIcons } from "@expo/vector-icons";
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useCallback } from "react";
 import { StyleSheet, View, Dimensions } from "react-native";
 import { EditModal } from "../components/EditModal/EditModal";
 import { AppButton } from "../components/UI/AppButton";
@@ -20,18 +20,24 @@ export const TodoScreen: React.FC = () => {
 
   const { title, id } = todo;
 
-  const onSaveHandler = async (editedTitle: string) => {
-    if (updateTodo) {
-      await updateTodo(editedTitle, id);
-    }
-    setModal(false);
-  };
+  const onSaveHandler = useCallback(
+    async (editedTitle: string) => {
+      if (updateTodo) {
+        await updateTodo(editedTitle, id);
+      }
+      setModal(false);
+    },
+    [updateTodo, setModal, id]
+  );
 
-  const onRemoveTodoHandler = (_id: string) => {
-    if (removeTodo) {
-      removeTodo(_id);
-    }
-  };
+  const onRemoveTodoHandler = useCallback(
+    (_id: string) => {
+      if (removeTodo) {
+        removeTodo(_id);
+      }
+    },
+    [removeTodo]
+  );
 
   return (
     <View>

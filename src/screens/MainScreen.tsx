@@ -19,18 +19,25 @@ export const MainScreen: React.FC = () => {
 
   const { changeScreen } = useContext(ScreenContext);
 
-  const width = () => {
+  const width = useCallback(() => {
     return Dimensions.get("window").width - MAIN_SCREEN_PADDING_HORIZONTAL * 2;
-  };
+  }, []);
 
   const [deviceWidth, setDeviceWidth] = useState(width());
 
-  useEffect(() => {
-    const update = () => setDeviceWidth(width());
-    const subscribe = () => Dimensions.addEventListener("change", update);
-    const unsubscribe = () => Dimensions.removeEventListener("change", update);
+  const update = useCallback(() => setDeviceWidth(width()), [width]);
 
+  const subscribe = useCallback(() => {
+    Dimensions.addEventListener("change", update);
+  }, [update]);
+
+  const unsubscribe = useCallback(() => {
+    Dimensions.removeEventListener("change", update);
+  }, [update]);
+
+  useEffect(() => {
     subscribe();
+
     return () => unsubscribe();
   });
 

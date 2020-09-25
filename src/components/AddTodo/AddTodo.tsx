@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { View, StyleSheet, TextInput, Alert, Keyboard } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { REACT_THEME_COLORS } from "../../settings";
@@ -8,7 +8,7 @@ import { AddTodoProps } from "../../types";
 export const AddTodo: React.FC<AddTodoProps> = ({ onSubmit }) => {
   const [value, setValue] = useState("");
 
-  const pressHandler = () => {
+  const pressHandler = useCallback(() => {
     if (value.trim()) {
       if (onSubmit) {
         onSubmit(value);
@@ -18,7 +18,7 @@ export const AddTodo: React.FC<AddTodoProps> = ({ onSubmit }) => {
     } else {
       Alert.alert("Entered value shouldn't be empty");
     }
-  };
+  }, [onSubmit, value]);
 
   return (
     <View style={styles.block}>

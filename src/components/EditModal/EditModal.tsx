@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { View, TextInput, StyleSheet, Modal, Alert } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { REACT_THEME_COLORS } from "../../settings";
@@ -12,7 +12,7 @@ export const EditModal: React.FC<EditModalProps> = ({
   onSaveHandler,
 }) => {
   const [title, setTitle] = useState(value);
-  const saveHandler = () => {
+  const saveHandler = useCallback(() => {
     const symbols = title.trim().length;
 
     if (symbols < 3) {
@@ -23,12 +23,12 @@ export const EditModal: React.FC<EditModalProps> = ({
     } else {
       onSaveHandler(title);
     }
-  };
+  }, [onSaveHandler, title]);
 
-  const cancelHandler = () => {
+  const cancelHandler = useCallback(() => {
     setTitle(value);
     onCancel();
-  };
+  }, [setTitle, onCancel, value]);
 
   return (
     <Modal visible={visible} animationType="slide">
